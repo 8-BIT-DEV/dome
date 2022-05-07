@@ -312,22 +312,30 @@ FILESYSTEM_createDirectory(WrenVM *vm) {
 }
 
 internal void
-FILESYSTEM_fileExists(WrenVM* vm)
+FILESYSTEM_doesFileExist(WrenVM* vm)
 {
-	ASSERT_SLOT_TYPE(vm, 1, STRING, "file path");
-	const char* path = wrenGetSlotString(vm, 1);
-	ENGINE* engine = (ENGINE*)wrenGetUserData(vm);
-	
-	size_t length;
-	char* data = ENGINE_readFile(engine, path, &length, NULL);
-	
-	
-	if(data == NULL)
-	{
-		wrenSetSlotBool(vm, 0, false);
-		return;
-	}
-	free(data);
-	wrenSetSlotBool(vm, 0, true);
-	return;
+ ASSERT_SLOT_TYPE(vm, 1, STRING, "file path");
+ const char* path = wrenGetSlotString(vm, 1);
+ ENGINE* engine = (ENGINE*)wrenGetUserData(vm);
+ 
+ bool fileCheck = ENGINE_fileExists(engine, path);
+ 
+ if (!fileCheck) {
+   wrenSetSlotBool(vm, 0, false);
+   return;
+ }
+ wrenSetSlotBool(vm, 0, true);
+ return;
+}
+
+internal void
+FILESYSTEM_doesDirectoryExist(WrenVM* vm)
+{
+ ASSERT_SLOT_TYPE(vm, 1, STRING, "dir path");
+ const char* path = wrenGetSlotString(vm, 1);
+ ENGINE* engine = (ENGINE*)wrenGetUserData(vm);
+ 
+ int dirCheck = ENGINE_directoryExists(engine, path);
+ wrenSetSlotDouble(vm, 0, (double)dirCheck);
+ return;
 }
