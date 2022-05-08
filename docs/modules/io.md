@@ -39,6 +39,6 @@ Given a valid `path`, creates the directory, if it doesn't already exist and mak
 #### `static doesFileExist(path: String): Boolean`
 Checks if the path to the given file exists. Does not check the tar bundle
 
-#### `static createDirectory(path: String): Boolean`
+#### `static doesDirectoryExist(path: String): Boolean`
 Checks if the path to the given directory exists. Will also return false if the path is to A file instead.
 Does not check the tar bundle.
